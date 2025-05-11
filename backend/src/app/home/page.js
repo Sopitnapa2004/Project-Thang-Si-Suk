@@ -77,22 +77,40 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Display Uploaded Images */}
+      {/* Display Uploaded BANNER Images */}
+      <h2 style={{ marginTop: 30 }}>📌 ภาพแถวบน (Banner)</h2>
       <div style={imageContainer}>
-        {knowledges.map((item) => (
-          <div key={item.id} style={{ display: "flex", flexDirection: "column", gap: "10px", marginBottom: "20px" }}>
-            <div style={imageBox}>
-              <img src={item.imageUrl} alt="Uploaded Image" style={{ width: "100%", height: "auto", borderRadius: "10px" }} />
-              <button style={closeButton} onClick={() => handleDelete(item.id)}>❌</button>
+        {knowledges
+          .filter(item => item.position === 'top')
+          .map(item => (
+            <div key={item.id} style={{ display: "flex", flexDirection: "column", gap: "10px", marginBottom: "20px" }}>
+              <div style={imageBox}>
+                <img src={item.imageUrl} alt="Uploaded Image" style={{ width: "100%", height: "auto", borderRadius: "10px" }} />
+                <button style={closeButton} onClick={() => handleDelete(item.id)}>❌</button>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+      </div>
+
+      {/* Display Uploaded INFOGRAPHIC Images */}
+      <h2 style={{ marginTop: 30 }}>📌 ภาพแถวล่าง (Infographic)</h2>
+      <div style={imageContainer}>
+        {knowledges
+          .filter(item => item.position === 'bottom')
+          .map(item => (
+            <div key={item.id} style={{ display: "flex", flexDirection: "column", gap: "10px", marginBottom: "20px" }}>
+              <div style={imageBox}>
+                <img src={item.imageUrl} alt="Uploaded Image" style={{ width: "100%", height: "auto", borderRadius: "10px" }} />
+                <button style={closeButton} onClick={() => handleDelete(item.id)}>❌</button>
+              </div>
+            </div>
+          ))}
       </div>
     </MainLayout>
   );
 }
 
-// สไตล์ต่างๆ ที่ใช้เฉพาะในหน้านี้
+// ✅ สไตล์ต่างๆ ที่ใช้เฉพาะในหน้านี้
 const sectionStyle = {
   marginBottom: 30,
 };
