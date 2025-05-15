@@ -53,72 +53,93 @@ export default function HomePage() {
 
   return (
     <MainLayout activeMenu="home">
-      <h1>ข้อมูลความรู้ในระบบ</h1>
+      <h1 style={titleStyle}>ข้อมูลความรู้ในระบบ</h1>
 
-      {/* ================= Banner Section ================= */}
-      <h2 style={{ marginTop: 30 }}>📌 ภาพแถวบน (Banner)</h2>
-      <div style={imageContainer}>
-        {/* ปุ่มเพิ่มรูป Banner */}
-        <div style={imageBox}>
-          <label style={iconButton}>
-            ➕
-            <input type="file" hidden onChange={(e) => handleUpload(e, "top")} />
-          </label>
+      {/* ====== BANNER Section ====== */}
+      <section style={sectionStyle}>
+        <h2 style={sectionTitle}>📌 รูปภาพแถวบน (Banner)</h2>
+        <div style={gridStyle}>
+          <UploadCard onUpload={(e) => handleUpload(e, "top")} />
+          {knowledges
+            .filter(item => item.position === 'top')
+            .map(item => (
+              <ImageCard
+                key={item.id}
+                imageUrl={item.imageUrl}
+                onDelete={() => handleDelete(item.id)}
+              />
+            ))}
         </div>
+      </section>
 
-        {/* แสดงรูป Banner */}
-        {knowledges
-          .filter(item => item.position === 'top')
-          .map(item => (
-            <div key={item.id} style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-              <div style={imageBox}>
-                <img src={item.imageUrl} alt="Uploaded" style={{ width: "100%", height: "auto", borderRadius: "10px" }} />
-                <button style={closeButton} onClick={() => handleDelete(item.id)}>❌</button>
-              </div>
-            </div>
-          ))}
-      </div>
-
-      {/* ================= Infographic Section ================= */}
-      <h2 style={{ marginTop: 30 }}>📌 ภาพแถวล่าง (Infographic)</h2>
-      <div style={imageContainer}>
-        {/* ปุ่มเพิ่มรูป Infographic */}
-        <div style={imageBox}>
-          <label style={iconButton}>
-            ➕
-            <input type="file" hidden onChange={(e) => handleUpload(e, "bottom")} />
-          </label>
+      {/* ====== INFOGRAPHIC Section ====== */}
+      <section style={sectionStyle}>
+        <h2 style={sectionTitle}>📌 รูปภาพแถวล่าง (Infographic)</h2>
+        <div style={gridStyle}>
+          <UploadCard onUpload={(e) => handleUpload(e, "bottom")} />
+          {knowledges
+            .filter(item => item.position === 'bottom')
+            .map(item => (
+              <ImageCard
+                key={item.id}
+                imageUrl={item.imageUrl}
+                onDelete={() => handleDelete(item.id)}
+              />
+            ))}
         </div>
-
-        {/* แสดงรูป Infographic */}
-        {knowledges
-          .filter(item => item.position === 'bottom')
-          .map(item => (
-            <div key={item.id} style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-              <div style={imageBox}>
-                <img src={item.imageUrl} alt="Uploaded" style={{ width: "100%", height: "auto", borderRadius: "10px" }} />
-                <button style={closeButton} onClick={() => handleDelete(item.id)}>❌</button>
-              </div>
-            </div>
-          ))}
-      </div>
+      </section>
     </MainLayout>
   );
 }
 
-// ================= STYLE =================
+// ======= COMPONENTS =======
 
-const imageContainer = {
-  display: "flex",
-  flexDirection: "row",
-  flexWrap: "wrap",
+function UploadCard({ onUpload }) {
+  return (
+    <div style={imageBox}>
+      <label style={iconButton}>
+        ➕
+        <input type="file" hidden onChange={onUpload} />
+      </label>
+    </div>
+  );
+}
+
+function ImageCard({ imageUrl, onDelete }) {
+  return (
+    <div style={imageBox}>
+      <img src={imageUrl} alt="Uploaded" style={imageStyle} />
+      <button style={closeButton} onClick={onDelete}>❌</button>
+    </div>
+  );
+}
+
+// ======= STYLE =======
+
+const titleStyle = {
+  fontSize: "28px",
+  fontWeight: "bold",
+  marginBottom: "30px",
+};
+
+const sectionStyle = {
+  marginBottom: "50px",
+};
+
+const sectionTitle = {
+  fontSize: "20px",
+  marginBottom: "15px",
+  color: "#333",
+};
+
+const gridStyle = {
+  display: "grid",
+  gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))",
   gap: "20px",
-  justifyContent: "flex-start",
-  marginBottom: "40px",
 };
 
 const imageBox = {
-  width: "320px",
+  width: "100%",
   height: "200px",
   backgroundColor: "#fff",
   borderRadius: "12px",
@@ -126,20 +147,26 @@ const imageBox = {
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-  padding: "10px",
   position: "relative",
   overflow: "hidden",
 };
 
+const imageStyle = {
+  width: "100%",
+  height: "100%",
+  objectFit: "cover",
+  borderRadius: "12px",
+};
+
 const iconButton = {
-  width: 50,
-  height: 50,
+  width: "50px",
+  height: "50px",
   borderRadius: "50%",
   backgroundColor: "#e0e0e0",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  fontSize: 24,
+  fontSize: "24px",
   cursor: "pointer",
 };
 
@@ -147,9 +174,10 @@ const closeButton = {
   position: "absolute",
   top: "10px",
   right: "10px",
-  backgroundColor: "transparent",
+  backgroundColor: "rgba(255, 255, 255, 0.8)",
   border: "none",
-  fontSize: "20px",
+  fontSize: "18px",
   cursor: "pointer",
-  color: "#ff0000",
+  borderRadius: "50%",
+  padding: "4px 8px",
 };
